@@ -1,0 +1,42 @@
+type Error = variant {
+  NotFound : record { msg : text };
+  GenerateFailed : record { msg : text };
+};
+type HealthRecord = record {
+  id : nat64;
+  age : nat32;
+  patient_name : text;
+  updated_at : opt nat64;
+  medication_history : vec text;
+  created_at : nat64;
+  diagnosis : text;
+  medications : text;
+  symptoms : text;
+  monitoring_data : text;
+};
+type PatientUpdatePayload = record {
+  age : nat32;
+  patient_name : text;
+  diagnosis : text;
+  medications : text;
+  symptoms : text;
+  monitoring_data : text;
+};
+type Result = variant { Ok; Err : Error };
+type Result_1 = variant { Ok : HealthRecord; Err : Error };
+type Result_2 = variant { Ok : text; Err : Error };
+type Result_3 = variant { Ok : nat64; Err : Error };
+type Result_4 = variant { Ok : vec text; Err : Error };
+service : {
+  add_health_record : (PatientUpdatePayload) -> (opt HealthRecord);
+  add_medication_record : (nat64, text) -> (Result);
+  delete_health_record : (nat64) -> (Result_1);
+  generate_health_report : (nat64) -> (Result_2) query;
+  get_all_health_records : () -> (vec HealthRecord) query;
+  get_health_record : (nat64) -> (Result_1) query;
+  get_latest_health_record_by_update_time : (nat64) -> (Result_3) query;
+  get_medication_history : (nat64) -> (Result_4) query;
+  get_total_health_records : () -> (nat64) query;
+  health_record_exists : (nat64) -> (bool) query;
+  update_health_record : (nat64, PatientUpdatePayload) -> (Result_1);
+}
