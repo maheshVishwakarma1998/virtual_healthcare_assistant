@@ -6,6 +6,7 @@ use ic_stable_structures::{Storable, BoundedStorable};
 #[derive(candid::CandidType, Clone, Serialize, Deserialize, Default)]
 pub struct HealthRecord {
    pub id: u64,
+   pub doctor_principal: String,
    pub patient_name: String,
    pub age: u32,
    pub symptoms: String,
@@ -57,5 +58,7 @@ pub struct PatientUpdatePayload {
 #[derive(candid::CandidType, Deserialize, Serialize)]
 pub enum Error {
     NotFound { msg: String },
+    NotDoctor,
     GenerateFailed { msg: String },
+    InputValidationFailed {msg: String}
 }
